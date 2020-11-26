@@ -1,8 +1,8 @@
-from random import randint
+from random import sample
 
 
 def generate_random_list(size, limit):
-    return [randint(0, limit) for i in range(size)]
+    return sample(range(limit), size)
 
 
 def list_overlap(l1, l2):
