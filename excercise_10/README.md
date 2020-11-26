@@ -1,5 +1,5 @@
 
-#
+# 10 - List Overlap Comprehensions
 
 Take two lists, say for example these two:
 
@@ -8,3 +8,7 @@ Take two lists, say for example these two:
 `b = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]`
 
 and write a program that returns a list that contains only the elements that are common between the lists (without duplicates). Make sure your program works on two lists of different sizes. Write this in one line of Python using at least one list comprehension. (Hint: Remember list comprehensions from Exercise 7).
+
+Extra:
+
+Randomly generate two lists to test this
