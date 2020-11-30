@@ -52,7 +52,7 @@ def get_page_content(link):
 
     paragraphs = [' '.join(p.xpath('.//text()')) for p in paragraphs]
 
-    content['body'] = {f'{p}\n' for p in paragraphs}
+    content['body'] = [f'{p}\n' for p in paragraphs]
 
     content['link'] = link
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     links = get_links(main_link, XPATH_LINKS)
     links = [f'{main_link}{l}' for l in links]
 
-    print(links)
+    # print(links)
 
     # Create each markdown from each link
     main(links)
