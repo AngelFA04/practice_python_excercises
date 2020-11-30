@@ -1,6 +1,11 @@
+"""
+Script to automatize the process of creating the folder,
+markdown and main.py pf each problem."""
+
 import os
 import requests
 from lxml import html
+from concurrent.futures import ThreadPoolExecutor
 
 XPATH_LINKS =  '//div[@class="left"]//a/@href'
 
@@ -8,7 +13,6 @@ XPATH_LINKS =  '//div[@class="left"]//a/@href'
 def get_page_parsed(link):
     """Get the content page and return a string"""
     response = requests.get(link).content.decode('utf-8')
-
     text_parsed = html.fromstring(response)
 
     return text_parsed
@@ -33,28 +37,39 @@ def get_page_content(link):
     # content['body'] = page.xpath('//p/text()')[0].text
 
     # Get the paragraphs below to h2 title with content having the word "Excercise"
-    content['body'] = page.xpath('//p')[0].xpath('.//text()')
 
+    # All the text between Excercise and Discussion
+    #page.xpath('//div[@class="boxframe center"]/span/h2[contains(@id, "exercise")]/following-sibling::p').xpath('.//text()')
+
+    nodes = page.xpath('//div[@class="boxframe center"]/span/h2[contains(@id, "exercise")]/following-sibling::*')
+    paragraphs = []
+    # Iterate while tag is 'p'
+    for n in nodes:
+        if n.tag == 'p':
+            paragraphs.append(n)
+        elif n.tag == 'h2':
+            break
+
+    paragraphs = [' '.join(p.xpath('.//text()')) for p in paragraphs]
+
+    content['body'] = {f'{p}\n' for p in paragraphs}
 
     content['link'] = link
+
+    import pdb; pdb.set_trace()
     return content
 
 
 def create_markdown_file(i, content):
 
-    title = ''
-
-
     os.mkdir(f'./excercise_{i}')
     with open(f'./excercise_{i}/README.md', 'w') as fp:
         # Append title
         fp.write(f"\n# {i} - {content['title']}\n")
-
         # Add link
-        fp.write(f"\n[Excercise link]({content['link']})\n")
-
+        fp.write(f"\n[Excercise link]({content['link']})\n\n")
         # Append problem description
-
+        {fp.write(p) for p in content['body']}
 
     with open(f'./excercise_{i}/main.py', 'w') as fp:
         fp.write('')
@@ -64,6 +79,7 @@ def main(links):
 
     # Create each markdown from each link
     # Iterate in that range of links
+
     # Add concurrency here
     for i, link in enumerate(links[11:37], 11):
         content = get_page_content(link)
