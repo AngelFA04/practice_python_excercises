@@ -75,13 +75,13 @@ def create_markdown_file(i, content):
         fp.write('')
 
 
-def main(links):
+def main(ranges, links):
 
     # Create each markdown from each link
     # Iterate in that range of links
 
     # Add concurrency here
-    for i, link in enumerate(links[11:37], 11):
+    for i, link in enumerate(links[ranges[0]-1:ranges[1]], ranges[0]):
         content = get_page_content(link)
         create_markdown_file(i, content)
 
@@ -92,7 +92,8 @@ if __name__ == "__main__":
     links = get_links(main_link, XPATH_LINKS)
     links = [f'{main_link}{l}' for l in links]
 
+    ranges = list(map(int, input("Insert the range to create the folders[1-36]: ").split()))
     # print(links)
 
     # Create each markdown from each link
-    main(links)
+    main(ranges,links)
