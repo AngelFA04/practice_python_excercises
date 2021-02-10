@@ -56,7 +56,6 @@ def get_page_content(link):
 
     content['link'] = link
 
-    import pdb; pdb.set_trace()
     return content
 
 
