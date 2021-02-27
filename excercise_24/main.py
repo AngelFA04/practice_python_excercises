@@ -4,7 +4,7 @@ def create_board(n):
     """
     cube = " ---\n|   |\n ---"
     superior = "--- "
-    middle = "  | "
+    middle = "{} | ".format(" ")
 
     output = ""
 
@@ -18,7 +18,7 @@ def create_board(n):
         output = " --- " + ( superior)*(n-1) + "\n"
         for i in range(n):
             #print("|",middle*(n))
-            output = output + "| " + (middle)*n + "\n"
+            output = output + f"| " + (middle)*n + "\n"
             #print(" ---",superior*(n-1))
             output = output + " --- " + (superior)*(n-1) + "\n"
 
